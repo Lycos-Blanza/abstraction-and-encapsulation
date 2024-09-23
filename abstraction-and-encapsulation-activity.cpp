@@ -3,13 +3,13 @@
 #include <string>
 using namespace std;
 
-// Abstract Account class for encapsulating account operations
+// Account class: This is for encapsulating account operations
 class Account {
 protected:
     double balance;
 
 public:
-    Account() : balance(0) {}
+    Account() : balance(0.00) {}
     
     virtual void deposit(double amount) {
         if (amount > 0) {
@@ -18,34 +18,40 @@ public:
         } else {
             cout << "Invalid deposit amount." << endl;
         }
+        
     }
 
     virtual void withdraw(double amount) = 0;
     virtual void checkBalance() const {
-    	cout << "------------------------------" << endl;
+    	cout << "--------------------------------" << endl;
         cout << "Current Balance: " << balance << endl;
     }
 };
 
-// SavingsAccount class with a minimum balance requirement
+// Savings Account class with a minimum balance requirement
 class SavingsAccount : public Account {
 private:
-    const double minimumBalance = 1000;
+    const double minimumBalance = 1000.00;
 
 public:
     void withdraw(double amount) override {
         if (amount <= 0) {
-            cout << "Invalid withdrawal amount." << endl;
-        } else if (balance - amount < minimumBalance) {
-            cout << "Cannot withdraw. Minimum balance of " << minimumBalance << " must be maintained." << endl;
-        } else {
+            cout << "Invalid withdrawal amount." << endl; 
+		
+		} else if (amount > balance) {
+            cout << "Insufficient funds." << endl;
+		
+		} else if (balance - amount < minimumBalance) {
+            cout << "Cannot withdraw...\nMinimum balance of " << minimumBalance << " must be maintained." << endl;
+            
+		} else {
             balance -= amount;
             cout << "Withdrew: " << amount << "\nNew Balance: " << balance << endl;
         }
     }
 };
 
-// CurrentAccount class with no minimum balance requirement
+// Current Account class with no minimum balance requirement
 class CurrentAccount : public Account {
 public:
     void withdraw(double amount) override {
@@ -55,7 +61,7 @@ public:
             cout << "Insufficient funds." << endl;
         } else {
             balance -= amount;
-            cout << "Withdrew: " << amount << ". New Balance: " << balance << endl;
+            cout << "Withdrew: " << amount << "\nNew Balance: " << balance << endl;
         }
     }
 };
@@ -65,10 +71,11 @@ class Menu {
 public:
     void showMainMenu() {
         cout << "\nMAIN MENU: \n1. Savings Account\n2. Current Account\n3. Exit\nChoose [1/2/3]: ";
+        
     }
 
     void showSubMenu() {
-    	cout << "------------------------------";
+    	cout << "--------------------------------";
         cout << "\nSUB MENU: \n1. Deposit\n2. Withdraw\n3. Check Balance\n4. Back\nChoose [1/2/3/4]: ";
     }
 };
@@ -88,16 +95,27 @@ int main() {
                 do {
                     menu.showSubMenu();
                     cin >> subOption;
+                    
                     if (subOption == 1) {
                         double amount;
-                        cout << "------------------------------" << endl;
+                        cout << "--------------------------------" << endl;
                         cout << "Enter deposit amount: "; cin >> amount;
                         savings.deposit(amount);
+                    if (cin.fail()) {
+ 					    cin.clear(); cin.ignore(512, '\n');
+  					    cout << "--Not a number--" << endl;
+					}
+					
                     } else if (subOption == 2) {
                         double amount;
-                        cout << "------------------------------" << endl;
+                        cout << "--------------------------------" << endl;
                         cout << "Enter withdrawal amount: "; cin >> amount;
                         savings.withdraw(amount);
+                    if (cin.fail()) {
+ 					    cin.clear(); cin.ignore(512, '\n');
+  					    cout << "--Not a number--" << endl;
+					}
+					
                     } else if (subOption == 3) {
                         savings.checkBalance();
                     }
@@ -110,14 +128,24 @@ int main() {
                     cin >> subOption;
                     if (subOption == 1) {
                         double amount;
-                        cout << "------------------------------" << endl;
+                        cout << "--------------------------------" << endl;
                         cout << "Enter deposit amount: "; cin >> amount;
                         current.deposit(amount);
+                    if (cin.fail()) {
+ 					    cin.clear(); cin.ignore(512, '\n');
+  					    cout << "--Not a number--" << endl;
+					}
+					
                     } else if (subOption == 2) {
                         double amount;
-                        cout << "------------------------------" << endl;
+                        cout << "--------------------------------" << endl;
                         cout << "Enter withdrawal amount: "; cin >> amount;
                         current.withdraw(amount);
+                    if (cin.fail()) {
+ 					    cin.clear(); cin.ignore(512, '\n');
+  					    cout << "--Not a number--" << endl;
+					}
+					
                     } else if (subOption == 3) {
                         current.checkBalance();
                     }
