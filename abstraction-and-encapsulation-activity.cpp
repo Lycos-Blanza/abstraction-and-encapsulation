@@ -9,7 +9,7 @@ protected:
     double balance;
 
 public:
-    Account() : balance(0.00) {}
+    Account() : balance (0.00) {}
     
     virtual void deposit(double amount) {
         if (amount > 0) {
@@ -21,7 +21,7 @@ public:
         
     }
 
-    virtual void withdraw(double amount) = 0;
+    virtual void withdraw (double amount) = 0;
     virtual void checkBalance() const {
     	cout << "--------------------------------" << endl;
         cout << "Current Balance: " << balance << endl;
@@ -71,12 +71,18 @@ class Menu {
 public:
     void showMainMenu() {
         cout << "\nMAIN MENU: \n1. Savings Account\n2. Current Account\n3. Exit\nChoose [1/2/3]: ";
+        if (cin.fail()) {
+ 					    cin.clear(); cin.ignore(512, '\n');
+					}
         
     }
 
     void showSubMenu() {
     	cout << "--------------------------------";
         cout << "\nSUB MENU: \n1. Deposit\n2. Withdraw\n3. Check Balance\n4. Back\nChoose [1/2/3/4]: ";
+        if (cin.fail()) {
+ 					    cin.clear(); cin.ignore(512, '\n');
+					}
     }
 };
 
